@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pip-Boy Interface</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <div class="nav">
+        <button class="active" data-page="status">STATUS</button>
+        <button data-page="inventory">INVENTORY</button>
+        <button data-page="radio">RADIO</button>
+    </div>
+
+    <div class="page-container">
+
+        <!-- STATUS PAGE -->
+        <div class="page active" id="status">
+            <h2>STATUS</h2>
+
+            <div class="stat-group">
+                HP<br>
+                <input type="range" min="0" max="100" value="100" class="slider" id="hpSlider">
+                <div id="hpValue">100 / 100</div>
+            </div>
+
+            <div class="stat-group">
+                RADS<br>
+                <input type="range" min="0" max="100" value="0" class="slider" id="radSlider">
+                <div id="radValue">0 RADS</div>
+            </div>
+        </div>
+
+        <!-- INVENTORY -->
+        <div class="page" id="inventory">
+            <h2>INVENTORY</h2>
+            <div class="inventory-box">
+                Items will go here.
+            </div>
+        </div>
+
+        <!-- RADIO -->
+        <div class="page" id="radio">
+            <div class="station" data-audio="/audio/QuestStarter.mp3">
+                <div class="square"></div>
+                Mysterious Broadcast Signal
+            </div>
+
+            <div class="station" data-audio="/audio/QuestStarter.mp3">
+                <div class="square"></div>
+                Enclave Radio
+            </div>
+
+            <div class="station" data-audio="/audio/QuestStarter.mp3">
+                <div class="square"></div>
+                Mojave Music Radio
+            </div>
+            <!-- WAVE -->
+            <div class="wave-container">
+                <canvas id="waveCanvas"></canvas>
+            </div>
+        </div>
+
+
+        <script src="js/navigation.js"></script>
+        <script src="js/status.js"></script>
+        <script src="js/radio.js"></script>
+        <script src="js/wave.js"></script>
+</body>
+</html>
