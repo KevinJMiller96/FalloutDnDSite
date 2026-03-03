@@ -9,8 +9,10 @@
 
     <!-- NAV -->
     <div class="nav">
-        <button class="active" data-page="status">STATUS</button>
-        <button data-page="inventory">INVENTORY</button>
+        <button class="active" data-page="status">STAT</button>
+        <button data-page="inventory">INV</button>
+        <button data-page="data">DATA</button>
+        <button data-page="map">MAP</button>
         <button data-page="radio">RADIO</button>
     </div>
 
@@ -41,6 +43,25 @@
             </div>
         </div>
 
+        <div class="page" id="map">
+            <div class="map-wrapper" id="mapWrapper">
+
+                <div class="map-content" id="mapContent">
+
+                    <img src="/images/worldmap.png" id="pipboyMap" draggable="false">
+
+                    <!-- NPC Marker -->
+                    <div class="map-marker"
+                         data-name="Raider Captain"
+                         style="left: 120px; top: 800px;">
+                        <img src="/images/fallout_wheel.jpg">
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
         <!-- RADIO -->
         <div class="page" id="radio">
             <div class="station" data-audio="/audio/QuestStarter.mp3">
@@ -63,10 +84,11 @@
             </div>
         </div>
 
-
-        <script src="js/navigation.js"></script>
-        <script src="js/status.js"></script>
-        <script src="js/radio.js"></script>
-        <script src="js/wave.js"></script>
+    </div>
+    <script src="js/navigation.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/radio.js"></script>
+    <script src="js/wave.js"></script>
+    <script src="js/map.js"></script>
 </body>
 </html>

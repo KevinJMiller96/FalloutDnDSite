@@ -11,6 +11,7 @@
     display: flex;
     gap: 15px;
     padding: 20px 40px 0 40px;
+    justify-content: space-around;
 }
 
     .nav button {
@@ -22,6 +23,7 @@
         font-size: 16px;
         position: relative;
         transition: all 0.2s ease;
+        font-weight: 900;
     }
 
         .nav button.active {
@@ -78,7 +80,7 @@
         background: #39ff14;
         color: black;
         font-weight: bold;
-        width: 40em;
+        width: 20%;
     }
 
     .station .square {
@@ -107,3 +109,66 @@ canvas {
     width: 100%;
     height: 100%;
 }
+
+
+/*================ MAP ====================*/
+.map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    overflow: hidden;
+    border: 2px solid #00ff66;
+    background: #001a00;
+    cursor: grab;
+    position: center;
+}
+
+    .map-wrapper:active {
+        cursor: grabbing;
+    }
+
+#pipboyMap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+/*================ MAP MARKERS ====================*/
+.map-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+    .map-marker img {
+        width: 30px;
+        height: auto;
+        transition: 0.2s ease;
+    }
+
+    .map-marker::after {
+        content: attr(data-name);
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #00ff66;
+        color: black;
+        padding: 4px 8px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: 0.2s ease;
+    }
+
+    .map-marker:hover img {
+        transform: scale(1.4);
+    }
+
+    .map-marker:hover::after {
+        opacity: 1;
+    }

@@ -68,7 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="audio\QuestStarter.mp3" />
+    <Content Include="audio\tab-click.mp3" />
+    <Content Include="images\fallout_wheel.jpg" />
+    <Content Include="images\worldmap.png" />
     <Content Include="index.html" />
+    <Content Include="js\map.js" />
     <Content Include="js\navigation.js" />
     <Content Include="js\radio.js" />
     <Content Include="js\status.js" />

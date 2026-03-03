@@ -44,9 +44,15 @@ function drawWave() {
         let y = centerY;
 
         if (active) {
-            y += Math.sin((x * 0.03) + time) * 20
-                + Math.sin((x * 0.11) + time * 1.5) * 15
-                + (Math.random() * 20 - 10);
+
+            const noise =
+                Math.sin((x * 0.02) + time) * 30 +
+                Math.sin((x * 0.07) + time * 1.7) * 20 +
+                Math.sin((x * 0.15) + time * 2.3) * 10;
+
+            const chaos = (Math.random() - 0.5) * 25;
+
+            y += noise + chaos;
         }
 
         if (x === 0) ctx.moveTo(x, y);
@@ -55,7 +61,7 @@ function drawWave() {
 
     ctx.stroke();
 
-    if (active) time += 0.08;
+    if (active) time += 0.15;
 
     requestAnimationFrame(drawWave);
 }
