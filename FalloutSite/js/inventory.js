@@ -21,7 +21,15 @@ function centerInventoryButton(button) {
     const maxNegativeOffset = Math.min(0, subnavWidth - trackWidth);
 
     const targetCenter = button.offsetLeft + (button.offsetWidth / 2);
-    const centeredOffset = (subnavWidth / 2) - targetCenter;
+    const inventoryNavButton = document.querySelector('.nav button[data-page="inventory"]');
+    const subnavRect = inventorySubnav.getBoundingClientRect();
+    const navRect = inventoryNavButton?.getBoundingClientRect();
+
+    const desiredCenter = navRect
+        ? (navRect.left + (navRect.width / 2)) - subnavRect.left
+        : subnavWidth / 2;
+
+    const centeredOffset = desiredCenter - targetCenter;
     const boundedOffset = Math.max(maxNegativeOffset, Math.min(0, centeredOffset));
 
     inventoryTrack.style.setProperty("--slider-offset", `${boundedOffset}px`);
