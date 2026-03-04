@@ -229,6 +229,20 @@
     display: block;
 }
 
+.quest-entry {
+    margin-bottom: 18px;
+}
+
+.quest-entry h3 {
+    margin: 0 0 6px;
+    color: #ffe600;
+}
+
+.quest-entry p {
+    margin: 0;
+    line-height: 1.4;
+}
+
 /* ================ RADIO ================ */
 .station {
     display: flex;

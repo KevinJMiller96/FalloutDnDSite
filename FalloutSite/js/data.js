@@ -2,6 +2,7 @@ const dataSubnav = document.querySelector(".data-subnav");
 const dataTrack = document.querySelector(".data-subnav-track");
 const dataButtons = document.querySelectorAll(".data-subnav button");
 const dataPanels = document.querySelectorAll(".data-panel");
+const questPanel = document.getElementById("quest");
 
 function centerDataButton(button) {
     if (!dataSubnav || !dataTrack || !button) return;
@@ -25,6 +26,41 @@ function centerDataButton(button) {
     dataTrack.style.setProperty("--slider-offset", `${boundedOffset}px`);
 }
 
+async function loadQuests() {
+    if (!questPanel) return;
+
+    questPanel.textContent = "Loading quests...";
+
+    try {
+        const response = await fetch("/QuestsHandler.ashx", { headers: { Accept: "application/json" } });
+        if (!response.ok) {
+            throw new Error(`Request failed (${response.status})`);
+        }
+
+        const data = await response.json();
+        const quests = Array.isArray(data.quests) ? data.quests : [];
+
+        if (quests.length === 0) {
+            questPanel.textContent = "No quests found.";
+            return;
+        }
+
+        const questMarkup = quests
+            .map(({ QuestName, QuestDescription }) => `
+                <div class="quest-entry">
+                    <h3>${QuestName || "Unnamed quest"}</h3>
+                    <p>${QuestDescription || "No description provided."}</p>
+                </div>
+            `)
+            .join("");
+
+        questPanel.innerHTML = questMarkup;
+    } catch (error) {
+        console.error("Unable to load quests", error);
+        questPanel.textContent = "Could not load quests from the database.";
+    }
+}
+
 dataButtons.forEach(button => {
     button.addEventListener("click", () => {
         dataButtons.forEach(btn => btn.classList.remove("active"));
@@ -46,3 +82,4 @@ window.centerDataActiveButton = function centerDataActiveButton() {
 
 window.centerDataActiveButton();
 window.addEventListener("resize", window.centerDataActiveButton);
+loadQuests();
