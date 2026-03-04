@@ -350,3 +350,39 @@ canvas {
     .map-marker:hover::after {
         opacity: 1;
     }
+
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 18px;
+    }
+
+    .inventory-subnav,
+    .data-subnav {
+        width: 100%;
+        margin-left: 0;
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .inventory-subnav-track::before,
+    .inventory-subnav-track::after,
+    .data-subnav-track::before,
+    .data-subnav-track::after {
+        flex-basis: 16vw;
+    }
+
+    .inventory-subnav button {
+        font-size: 18px;
+        padding: 7px 6%;
+    }
+
+    .inventory-subnav button.active {
+        font-size: 24px;
+    }
+
+    .data-subnav button {
+        font-size: 24px;
+        padding: 7px 6%;
+    }
+}
