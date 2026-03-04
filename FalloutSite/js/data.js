@@ -92,8 +92,8 @@ function getSupabaseCredentials() {
     const runtimeConfig = window.__SUPABASE__ || {};
 
     return {
-        url: runtimeConfig.url || "https://uhuhsfmkgktnchazuoey.supabase.co",
-        anonKey: runtimeConfig.anonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWhzZm1rZ2t0bmNoYXp1b2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzg4NTMsImV4cCI6MjA4ODA1NDg1M30.l6J6fod4UAYVvJ5-lVRJJDyrPBc82OjstxQKEhSU-3I"
+        url: "https://uhuhsfmkgktnchazuoey.supabase.co",
+        anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWhzZm1rZ2t0bmNoYXp1b2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzg4NTMsImV4cCI6MjA4ODA1NDg1M30.l6J6fod4UAYVvJ5-lVRJJDyrPBc82OjstxQKEhSU-3I"
     };
 }
 
@@ -108,7 +108,7 @@ async function loadQuests() {
 
         const { data, error } = await supabase
             .from("Quests")
-            .select("id, quest_id, Quest_ID, QuestId, Quest_Name, quest_name, QuestName, questName, Quest_Description, quest_description, QuestDescription, questDescription")
+            .select("Quest_Name, Quest_Description")
             .order("Quest_Name", { ascending: true });
 
         if (error) throw error;
