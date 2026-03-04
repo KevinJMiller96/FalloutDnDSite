@@ -59,11 +59,41 @@
 }
 
 /* ================ INVENTORY ================ */
+.inventory-subnav {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+    .inventory-subnav button {
+        background: transparent;
+        border: 1px solid #00ff66;
+        color: #00ff66;
+        padding: 8px 14px;
+        cursor: pointer;
+        font-family: "Courier New", monospace;
+        font-weight: bold;
+    }
+
+        .inventory-subnav button.active {
+            background: #00ff66;
+            color: #001a0a;
+        }
+
 .inventory-box {
     border: 1px solid #00ff66;
     padding: 20px;
     width: 500px;
+    min-height: 120px;
 }
+
+.inventory-panel {
+    display: none;
+}
+
+    .inventory-panel.active {
+        display: block;
+    }
 
 /* ================ RADIO ================ */
 .station {

@@ -38,8 +38,24 @@
         <!-- INVENTORY -->
         <div class="page" id="inventory">
             <h2>INVENTORY</h2>
+            <div class="inventory-subnav">
+                <button class="active" data-category="weapons">WEAPONS</button>
+                <button data-category="apparel">APPAREL</button>
+                <button data-category="aid">AID</button>
+            </div>
+
             <div class="inventory-box">
-                Items will go here.
+                <div class="inventory-panel active" id="weapons">
+                    Weapons list will go here.
+                </div>
+
+                <div class="inventory-panel" id="apparel">
+                    Apparel list will go here.
+                </div>
+
+                <div class="inventory-panel" id="aid">
+                    Aid items will go here.
+                </div>
             </div>
         </div>
 
@@ -86,6 +102,7 @@
 
     </div>
     <script src="js/navigation.js"></script>
+    <script src="js/inventory.js"></script>
     <script src="js/status.js"></script>
     <script src="js/radio.js"></script>
     <script src="js/wave.js"></script>
