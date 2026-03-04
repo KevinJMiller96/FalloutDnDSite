@@ -83,3 +83,42 @@ window.centerDataActiveButton = function centerDataActiveButton() {
 window.centerDataActiveButton();
 window.addEventListener("resize", window.centerDataActiveButton);
 loadQuests();
+
+
+const SUPABASE_URL = "https://uhuhsfmkgktnchazuoey.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWhzZm1rZ2t0bmNoYXp1b2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzg4NTMsImV4cCI6MjA4ODA1NDg1M30.l6J6fod4UAYVvJ5-lVRJJDyrPBc82OjstxQKEhSU-3I";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+async function loadQuests() {
+    if (!questPanel) return;
+
+    questPanel.textContent = "Loading quests...";
+
+    try {
+        const { data: quests, error } = await supabase
+            .from("Quests")
+            .select("Quest_Name, Quest_Description");
+
+        if (error) throw error;
+
+        if (!quests || quests.length === 0) {
+            questPanel.textContent = "No quests found.";
+            return;
+        }
+
+        const questMarkup = quests
+            .map(({ Quest_Name, Quest_Description }) => `
+                <div class="quest-entry">
+                    <h3>${Quest_Name || "Unnamed quest"}</h3>
+                    <p>${Quest_Description || "No description provided."}</p>
+                </div>
+            `)
+            .join("");
+
+        questPanel.innerHTML = questMarkup;
+
+    } catch (error) {
+        console.error("Unable to load quests", error);
+        questPanel.textContent = "Could not load quests from Supabase.";
+    }
+}
