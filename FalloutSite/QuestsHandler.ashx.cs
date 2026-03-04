@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.Common;
 using System.Web;
 using System.Web.Script.Serialization;
+using Npgsql;
 
 namespace FalloutSite
 {
@@ -29,49 +30,41 @@ namespace FalloutSite
             }
         }
 
-        private static List<QuestDto> LoadQuests()
+
+    private static List<QuestDto> LoadQuests()
+    {
+        var connectionSettings = ConfigurationManager.ConnectionStrings["DefaultConnection"];
+        if (connectionSettings == null)
+            throw new InvalidOperationException("DefaultConnection missing.");
+
+        var quests = new List<QuestDto>();
+
+        using (var connection = new NpgsqlConnection(connectionSettings.ConnectionString))
         {
-            var connectionSettings = ConfigurationManager.ConnectionStrings["DefaultConnection"];
-            if (connectionSettings == null)
+            connection.Open();
+
+            using (var command = new NpgsqlCommand(
+                "SELECT \"Quest_Name\", \"Quest_Description\" FROM \"Quests\"",
+                connection))
             {
-                throw new InvalidOperationException("DefaultConnection was not found in Web.config.");
-            }
-
-            var factory = DbProviderFactories.GetFactory(connectionSettings.ProviderName);
-            var quests = new List<QuestDto>();
-
-            using (var connection = factory.CreateConnection())
-            {
-                if (connection == null)
+                using (var reader = command.ExecuteReader())
                 {
-                    throw new InvalidOperationException("Failed to create a database connection.");
-                }
-
-                connection.ConnectionString = connectionSettings.ConnectionString;
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT \"Quest_Name\", \"Quest_Description\" FROM \"Quests\"";
-
-                    using (var reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        quests.Add(new QuestDto
                         {
-                            quests.Add(new QuestDto
-                            {
-                                QuestName = reader["Quest_Name"]?.ToString() ?? string.Empty,
-                                QuestDescription = reader["Quest_Description"]?.ToString() ?? string.Empty
-                            });
-                        }
+                            QuestName = reader["Quest_Name"]?.ToString() ?? "",
+                            QuestDescription = reader["Quest_Description"]?.ToString() ?? ""
+                        });
                     }
                 }
             }
-
-            return quests;
         }
 
-        private class QuestDto
+        return quests;
+    }
+
+    private class QuestDto
         {
             public string QuestName { get; set; }
             public string QuestDescription { get; set; }
