@@ -58,6 +58,9 @@ function updateTransform() {
 }
 
 image.onload = fitToScreen;
+if (image.complete && image.naturalWidth) {
+    fitToScreen();
+}
 window.addEventListener("resize", fitToScreen);
 
 // ZOOM
