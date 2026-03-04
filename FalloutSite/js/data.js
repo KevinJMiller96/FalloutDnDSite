@@ -1,8 +1,10 @@
 const dataSubnav = document.querySelector(".data-subnav");
 const dataTrack = document.querySelector(".data-subnav-track");
-const dataButtons = document.querySelectorAll(".data-subnav button");
-const dataPanels = document.querySelectorAll(".data-panel");
 const questPanel = document.getElementById("quest");
+
+function getDataButtons() {
+    return dataTrack ? Array.from(dataTrack.querySelectorAll("button[data-quest-id]")) : [];
+}
 
 function centerDataButton(button) {
     if (!dataSubnav || !dataTrack || !button) return;
@@ -26,99 +28,117 @@ function centerDataButton(button) {
     dataTrack.style.setProperty("--slider-offset", `${boundedOffset}px`);
 }
 
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+}
+
+function normalizeQuest(rawQuest, fallbackIndex) {
+    const questName = rawQuest.Quest_Name || rawQuest.quest_name || rawQuest.QuestName || rawQuest.questName || `Quest ${fallbackIndex + 1}`;
+    const questDescription = rawQuest.Quest_Description || rawQuest.quest_description || rawQuest.QuestDescription || rawQuest.questDescription || "No description provided.";
+    const questId = rawQuest.id || rawQuest.quest_id || rawQuest.Quest_ID || rawQuest.QuestId || `quest-${fallbackIndex + 1}`;
+
+    return {
+        id: String(questId),
+        name: questName,
+        description: questDescription
+    };
+}
+
+function renderQuestSubnav(quests) {
+    if (!dataTrack) return;
+
+    dataTrack.innerHTML = quests
+        .map((quest, index) => `
+            <button class="${index === 0 ? "active" : ""}" data-quest-id="${escapeHtml(quest.id)}">${escapeHtml(quest.name)}</button>
+        `)
+        .join("");
+}
+
+function renderQuestDetails(quest) {
+    if (!questPanel || !quest) return;
+
+    questPanel.innerHTML = `
+        <div class="quest-entry">
+            <h3>${escapeHtml(quest.name)}</h3>
+            <p>${escapeHtml(quest.description)}</p>
+        </div>
+    `;
+}
+
+function wireQuestSubnav(quests) {
+    const buttons = getDataButtons();
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            buttons.forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            const selectedQuest = quests.find(quest => quest.id === button.dataset.questId);
+            if (selectedQuest) {
+                renderQuestDetails(selectedQuest);
+            }
+
+            centerDataButton(button);
+        });
+    });
+}
+
+function getSupabaseCredentials() {
+    const runtimeConfig = window.__SUPABASE__ || {};
+
+    return {
+        url: runtimeConfig.url || "https://uhuhsfmkgktnchazuoey.supabase.co",
+        anonKey: runtimeConfig.anonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWhzZm1rZ2t0bmNoYXp1b2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzg4NTMsImV4cCI6MjA4ODA1NDg1M30.l6J6fod4UAYVvJ5-lVRJJDyrPBc82OjstxQKEhSU-3I"
+    };
+}
+
 async function loadQuests() {
-    if (!questPanel) return;
+    if (!questPanel || !window.supabase?.createClient) return;
 
     questPanel.textContent = "Loading quests...";
 
     try {
-        const response = await fetch("/QuestsHandler.ashx", { headers: { Accept: "application/json" } });
-        if (!response.ok) {
-            throw new Error(`Request failed (${response.status})`);
-        }
+        const { url, anonKey } = getSupabaseCredentials();
+        const supabase = window.supabase.createClient(url, anonKey);
 
-        const data = await response.json();
-        const quests = Array.isArray(data.quests) ? data.quests : [];
+        const { data, error } = await supabase
+            .from("Quests")
+            .select("id, quest_id, Quest_ID, QuestId, Quest_Name, quest_name, QuestName, questName, Quest_Description, quest_description, QuestDescription, questDescription")
+            .order("Quest_Name", { ascending: true });
+
+        if (error) throw error;
+
+        const quests = (data || []).map(normalizeQuest);
 
         if (quests.length === 0) {
+            if (dataTrack) {
+                dataTrack.innerHTML = '<button class="active" disabled>NO QUESTS</button>';
+            }
             questPanel.textContent = "No quests found.";
             return;
         }
 
-        const questMarkup = quests
-            .map(({ QuestName, QuestDescription }) => `
-                <div class="quest-entry">
-                    <h3>${QuestName || "Unnamed quest"}</h3>
-                    <p>${QuestDescription || "No description provided."}</p>
-                </div>
-            `)
-            .join("");
-
-        questPanel.innerHTML = questMarkup;
+        renderQuestSubnav(quests);
+        renderQuestDetails(quests[0]);
+        wireQuestSubnav(quests);
+        centerDataButton(getDataButtons()[0]);
     } catch (error) {
         console.error("Unable to load quests", error);
-        questPanel.textContent = "Could not load quests from the database.";
+        if (dataTrack) {
+            dataTrack.innerHTML = '<button class="active" disabled>QUESTS</button>';
+        }
+        questPanel.textContent = "Could not load quests from Supabase.";
     }
 }
-
-dataButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        dataButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        dataPanels.forEach(panel => panel.classList.remove("active"));
-        const selectedPanel = document.getElementById(button.dataset.category);
-        if (selectedPanel) {
-            selectedPanel.classList.add("active");
-        }
-
-        centerDataButton(button);
-    });
-});
 
 window.centerDataActiveButton = function centerDataActiveButton() {
     centerDataButton(document.querySelector(".data-subnav button.active"));
 };
 
-window.centerDataActiveButton();
 window.addEventListener("resize", window.centerDataActiveButton);
 loadQuests();
-
-
-const SUPABASE_URL = "https://uhuhsfmkgktnchazuoey.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWhzZm1rZ2t0bmNoYXp1b2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzg4NTMsImV4cCI6MjA4ODA1NDg1M30.l6J6fod4UAYVvJ5-lVRJJDyrPBc82OjstxQKEhSU-3I";
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-async function loadQuests() {
-    if (!questPanel) return;
-
-    questPanel.textContent = "Loading quests...";
-
-    try {
-        const { data: quests, error } = await supabase
-            .from("Quests")
-            .select("Quest_Name, Quest_Description");
-
-        if (error) throw error;
-
-        if (!quests || quests.length === 0) {
-            questPanel.textContent = "No quests found.";
-            return;
-        }
-
-        const questMarkup = quests
-            .map(({ Quest_Name, Quest_Description }) => `
-                <div class="quest-entry">
-                    <h3>${Quest_Name || "Unnamed quest"}</h3>
-                    <p>${Quest_Description || "No description provided."}</p>
-                </div>
-            `)
-            .join("");
-
-        questPanel.innerHTML = questMarkup;
-
-    } catch (error) {
-        console.error("Unable to load quests", error);
-        questPanel.textContent = "Could not load quests from Supabase.";
-    }
-}
