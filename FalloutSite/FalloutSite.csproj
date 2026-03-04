@@ -70,6 +70,7 @@
     <Content Include="audio\QuestStarter.mp3" />
     <Content Include="audio\tab-click.mp3" />
     <Content Include="images\fallout_wheel.jpg" />
+    <Content Include="images\Fallout_wheel_trans.png" />
     <Content Include="images\UpstateMap.jpeg" />
     <Content Include="images\worldmap.png" />
     <Content Include="index.html" />
