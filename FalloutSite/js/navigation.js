@@ -30,5 +30,10 @@ navButtons.forEach(btn => {
         if (btn.dataset.page === "radio" && window.resizeWaveCanvas) {
             window.resizeWaveCanvas();
         }
+
+        // Recenter inventory category slider when inventory page is shown
+        if (btn.dataset.page === "inventory" && window.centerInventoryActiveButton) {
+            window.centerInventoryActiveButton();
+        }
     });
 });
