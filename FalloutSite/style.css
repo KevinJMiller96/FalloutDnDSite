@@ -60,14 +60,17 @@
 
 /* ================ INVENTORY ================ */
 #inventory {
-    margin-top: -26px;
+    margin-top: -30px;
 }
 
 .inventory-subnav {
     margin-bottom: 16px;
-    width: 100%;
+    width: calc(100% + 100px);
+    margin-left: -50px;
     overflow: hidden;
     padding: 6px 0;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
 }
 
 .inventory-subnav-track {
@@ -88,7 +91,8 @@
     .inventory-subnav button {
         background: transparent;
         border: none;
-        color: rgba(0,255,102,0.45);
+        color: rgba(0,255,102,0.92);
+        opacity: 0.35;
         padding: 4px 2px;
         cursor: pointer;
         font-family: "Courier New", monospace;
@@ -96,12 +100,25 @@
         font-weight: bold;
         position: relative;
         letter-spacing: 1px;
-        transition: color 0.2s ease, text-shadow 0.2s ease;
+        transition: color 0.2s ease, text-shadow 0.2s ease, opacity 0.2s ease;
         white-space: nowrap;
     }
 
+        .inventory-subnav button[data-distance="1"] {
+            opacity: 0.62;
+        }
+
+        .inventory-subnav button[data-distance="2"] {
+            opacity: 0.45;
+        }
+
+        .inventory-subnav button[data-distance="3"] {
+            opacity: 0.25;
+        }
+
         .inventory-subnav button.active {
             color: #ffe600;
+            opacity: 1;
             text-shadow: 0 0 10px rgba(255,230,0,0.7);
         }
 

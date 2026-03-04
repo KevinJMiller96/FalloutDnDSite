@@ -3,6 +3,16 @@ const inventoryTrack = document.querySelector(".inventory-subnav-track");
 const inventoryButtons = document.querySelectorAll(".inventory-subnav button");
 const inventoryPanels = document.querySelectorAll(".inventory-panel");
 
+function updateButtonDistanceOpacity(activeButton) {
+    const activeIndex = Array.from(inventoryButtons).indexOf(activeButton);
+    if (activeIndex === -1) return;
+
+    inventoryButtons.forEach((button, index) => {
+        const distance = Math.abs(index - activeIndex);
+        button.dataset.distance = String(Math.min(distance, 3));
+    });
+}
+
 function centerInventoryButton(button) {
     if (!inventorySubnav || !inventoryTrack || !button) return;
 
@@ -15,6 +25,7 @@ function centerInventoryButton(button) {
     const boundedOffset = Math.max(maxNegativeOffset, Math.min(0, centeredOffset));
 
     inventoryTrack.style.setProperty("--slider-offset", `${boundedOffset}px`);
+    updateButtonDistanceOpacity(button);
 }
 
 inventoryButtons.forEach(button => {
