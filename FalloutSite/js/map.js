@@ -1,39 +1,64 @@
 const wrapper = document.getElementById("mapWrapper");
-const mapImage = document.getElementById("pipboyMap");
+const content = document.getElementById("mapContent");
+const image = document.getElementById("pipboyMap");
 
 let scale = 1;
-const MIN_SCALE = 1;
-const MAX_SCALE = 3;
+let minScale = 1;
+const maxScale = 4;
 
-let originX = 0;
-let originY = 0;
+let posX = 0;
+let posY = 0;
 
 let startX = 0;
 let startY = 0;
-let isDragging = false;
+let dragging = false;
+
+function fitToScreen() {
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const imgWidth = image.naturalWidth;
+    const imgHeight = image.naturalHeight;
+
+    const scaleX = wrapperRect.width / imgWidth;
+    const scaleY = wrapperRect.height / imgHeight;
+
+    scale = Math.min(scaleX, scaleY);
+    minScale = scale;
+
+    posX = (wrapperRect.width - imgWidth * scale) / 2;
+    posY = (wrapperRect.height - imgHeight * scale) / 2;
+
+    updateTransform();
+}
 
 function clampPosition() {
     const wrapperRect = wrapper.getBoundingClientRect();
-    const imageWidth = mapImage.naturalWidth * scale;
-    const imageHeight = mapImage.naturalHeight * scale;
+    const contentWidth = image.naturalWidth * scale;
+    const contentHeight = image.naturalHeight * scale;
 
-    const minX = wrapperRect.width - imageWidth;
-    const minY = wrapperRect.height - imageHeight;
+    const minX = wrapperRect.width - contentWidth;
+    const minY = wrapperRect.height - contentHeight;
 
-    originX = Math.min(0, Math.max(minX, originX));
-    originY = Math.min(0, Math.max(minY, originY));
+    if (contentWidth <= wrapperRect.width) {
+        posX = (wrapperRect.width - contentWidth) / 2;
+    } else {
+        posX = Math.min(0, Math.max(minX, posX));
+    }
+
+    if (contentHeight <= wrapperRect.height) {
+        posY = (wrapperRect.height - contentHeight) / 2;
+    } else {
+        posY = Math.min(0, Math.max(minY, posY));
+    }
 }
 
 function updateTransform() {
     clampPosition();
-    mapImage.style.transform =
-        `translate(${originX}px, ${originY}px) scale(${scale})`;
+    content.style.transform =
+        `translate(${posX}px, ${posY}px) scale(${scale})`;
 }
 
-// Wait for image load
-mapImage.onload = () => {
-    updateTransform();
-};
+image.onload = fitToScreen;
+window.addEventListener("resize", fitToScreen);
 
 // ZOOM
 wrapper.addEventListener("wheel", (e) => {
@@ -41,33 +66,31 @@ wrapper.addEventListener("wheel", (e) => {
 
     const zoomAmount = 0.15;
     const direction = e.deltaY > 0 ? -1 : 1;
-
     const newScale = scale + direction * zoomAmount;
 
-    // Hard clamp zoom
-    if (newScale < MIN_SCALE || newScale > MAX_SCALE) return;
+    if (newScale < minScale || newScale > maxScale) return;
 
     scale = newScale;
-
     updateTransform();
 });
 
 // DRAG
 wrapper.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    startX = e.clientX - originX;
-    startY = e.clientY - originY;
+    if (scale <= minScale) return; // no dragging unless zoomed
+    dragging = true;
+    startX = e.clientX - posX;
+    startY = e.clientY - posY;
 });
 
 window.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
+    if (!dragging) return;
 
-    originX = e.clientX - startX;
-    originY = e.clientY - startY;
+    posX = e.clientX - startX;
+    posY = e.clientY - startY;
 
     updateTransform();
 });
 
 window.addEventListener("mouseup", () => {
-    isDragging = false;
+    dragging = false;
 });
