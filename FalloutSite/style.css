@@ -93,7 +93,7 @@
         border: none;
         color: rgba(0,255,102,0.92);
         opacity: 0.35;
-        padding: 4px 2px;
+        padding: 7px 10%;
         cursor: pointer;
         font-family: "Courier New", monospace;
         font-size: 22px;
@@ -120,6 +120,9 @@
             color: #ffe600;
             opacity: 1;
             text-shadow: 0 0 10px rgba(255,230,0,0.7);
+            font-weight: bolder;
+            font-size: 36px;
+            transition: font-size 0.2s ease; /* Smooth transition */
         }
 
         .inventory-subnav button.active::after {
