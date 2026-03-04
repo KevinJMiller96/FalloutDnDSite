@@ -35,5 +35,10 @@ navButtons.forEach(btn => {
         if (btn.dataset.page === "inventory" && window.centerInventoryActiveButton) {
             window.centerInventoryActiveButton();
         }
+
+        // Recenter data category slider when data page is shown
+        if (btn.dataset.page === "data" && window.centerDataActiveButton) {
+            window.centerDataActiveButton();
+        }
     });
 });
