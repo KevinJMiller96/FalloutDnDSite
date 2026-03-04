@@ -75,15 +75,21 @@
     <Content Include="images\worldmap.png" />
     <Content Include="index.html" />
     <Content Include="js\map.js" />
+    <Content Include="js\data.js" />
+    <Content Include="js\inventory.js" />
     <Content Include="js\navigation.js" />
     <Content Include="js\radio.js" />
     <Content Include="js\status.js" />
     <Content Include="js\wave.js" />
     <Content Include="style.css" />
+    <Content Include="QuestsHandler.ashx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestsHandler.ashx.cs">
+      <DependentUpon>QuestsHandler.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
