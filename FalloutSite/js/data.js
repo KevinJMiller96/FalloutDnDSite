@@ -18,7 +18,8 @@ function centerDataButton(button) {
     const subnavRect = dataSubnav.getBoundingClientRect();
     const navRect = dataNavButton?.getBoundingClientRect();
 
-    const desiredCenter = navRect
+    const shouldUsePageNavAnchor = window.matchMedia("(min-width: 769px)").matches;
+    const desiredCenter = shouldUsePageNavAnchor && navRect
         ? (navRect.left + (navRect.width / 2)) - subnavRect.left
         : subnavWidth / 2;
 
