@@ -159,58 +159,12 @@
     margin-top: -30px;
 }
 
-.data-subnav {
-    margin-bottom: 16px;
-    width: calc(100% + 100px);
-    margin-left: -50px;
-    overflow: hidden;
-    padding: 6px 0;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-}
-
-.data-subnav-track {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-    width: max-content;
-    transform: translateX(var(--slider-offset, 0px));
-    transition: transform 0.28s ease;
-}
-
-.data-subnav-track::before,
-.data-subnav-track::after {
-    content: "";
-    flex: 0 0 36vw;
-}
-
-.data-subnav button {
-    background: transparent;
-    border: none;
+.data-title {
+    margin: 0 0 18px;
     color: #ffe600;
-    opacity: 1;
-    padding: 7px 10%;
-    cursor: pointer;
-    font-family: "Courier New", monospace;
     font-size: 36px;
-    font-weight: bolder;
-    position: relative;
-    letter-spacing: 1px;
-    white-space: nowrap;
+    letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(255,230,0,0.7);
-}
-
-.data-subnav button.active::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -12px;
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 10px solid #ffe600;
 }
 
 .data-box {
@@ -229,18 +183,68 @@
     display: block;
 }
 
-.quest-entry {
-    margin-bottom: 18px;
+.quest-layout {
+    display: flex;
+    gap: 24px;
+    min-height: 320px;
 }
 
-.quest-entry h3 {
+.quest-list {
+    width: 100%;
+}
+
+.quest-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    color: #00ff66;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-family: "Courier New", monospace;
+    font-size: 27px;
+}
+
+.quest-item .square {
+    width: 12px;
+    height: 12px;
+    background: black;
+    display: none;
+    flex-shrink: 0;
+}
+
+.quest-item.selected {
+    background: #39ff14;
+    color: black;
+    font-weight: bold;
+}
+
+.quest-item.selected .square {
+    display: block;
+}
+
+.quest-name {
+    overflow-wrap: anywhere;
+}
+
+.quest-details {
+    width: 40%;
+    border-left: 1px solid #00ff66;
+    padding-left: 18px;
+    line-height: 1.45;
+}
+
+.quest-details h3 {
     margin: 0 0 6px;
     color: #ffe600;
 }
 
-.quest-entry p {
+.quest-details p {
     margin: 0;
-    line-height: 1.4;
 }
 
 /* ================ RADIO ================ */
@@ -357,8 +361,7 @@ canvas {
         padding: 18px;
     }
 
-    .inventory-subnav,
-    .data-subnav {
+    .inventory-subnav {
         width: 100%;
         margin-left: 0;
         -webkit-mask-image: none;
@@ -366,9 +369,7 @@ canvas {
     }
 
     .inventory-subnav-track::before,
-    .inventory-subnav-track::after,
-    .data-subnav-track::before,
-    .data-subnav-track::after {
+    .inventory-subnav-track::after {
         flex-basis: 16vw;
     }
 
@@ -381,8 +382,23 @@ canvas {
         font-size: 24px;
     }
 
-    .data-subnav button {
+    .data-title {
         font-size: 24px;
-        padding: 7px 6%;
+    }
+
+    .quest-layout {
+        flex-direction: column;
+    }
+
+    .quest-item {
+        font-size: 22px;
+    }
+
+    .quest-details {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #00ff66;
+        padding-left: 0;
+        padding-top: 14px;
     }
 }
