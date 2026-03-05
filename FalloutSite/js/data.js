@@ -1,33 +1,5 @@
-const dataSubnav = document.querySelector(".data-subnav");
-const dataTrack = document.querySelector(".data-subnav-track");
-const questPanel = document.getElementById("quest");
-
-function getDataButtons() {
-    return dataTrack ? Array.from(dataTrack.querySelectorAll("button[data-quest-id]")) : [];
-}
-
-function centerDataButton(button) {
-    if (!dataSubnav || !dataTrack || !button) return;
-
-    const subnavWidth = dataSubnav.clientWidth;
-    const trackWidth = dataTrack.scrollWidth;
-    const maxNegativeOffset = Math.min(0, subnavWidth - trackWidth);
-
-    const targetCenter = button.offsetLeft + (button.offsetWidth / 2);
-    const dataNavButton = document.querySelector('.nav button[data-page="data"]');
-    const subnavRect = dataSubnav.getBoundingClientRect();
-    const navRect = dataNavButton?.getBoundingClientRect();
-
-    const shouldUsePageNavAnchor = window.matchMedia("(min-width: 769px)").matches;
-    const desiredCenter = shouldUsePageNavAnchor && navRect
-        ? (navRect.left + (navRect.width / 2)) - subnavRect.left
-        : subnavWidth / 2;
-
-    const centeredOffset = desiredCenter - targetCenter;
-    const boundedOffset = Math.max(maxNegativeOffset, Math.min(0, centeredOffset));
-
-    dataTrack.style.setProperty("--slider-offset", `${boundedOffset}px`);
-}
+const questList = document.getElementById("questList");
+const questDetails = document.getElementById("questDetails");
 
 function escapeHtml(value) {
     return String(value)
@@ -50,48 +22,51 @@ function normalizeQuest(rawQuest, fallbackIndex) {
     };
 }
 
-function renderQuestSubnav(quests) {
-    if (!dataTrack) return;
+function renderQuestDescription(quest) {
+    if (!questDetails) return;
 
-    dataTrack.innerHTML = quests
-        .map((quest, index) => `
-            <button class="${index === 0 ? "active" : ""}" data-quest-id="${escapeHtml(quest.id)}">${escapeHtml(quest.name)}</button>
-        `)
-        .join("");
-}
-
-function renderQuestDetails(quest) {
-    if (!questPanel || !quest) return;
-
-    questPanel.innerHTML = `
-        <div class="quest-entry">
-            <h3>${escapeHtml(quest.name)}</h3>
-            <p>${escapeHtml(quest.description)}</p>
-        </div>
+    questDetails.innerHTML = `
+        <h3>${escapeHtml(quest.name)}</h3>
+        <p>${escapeHtml(quest.description)}</p>
     `;
 }
 
-function wireQuestSubnav(quests) {
-    const buttons = getDataButtons();
+function selectQuest(questButton, quests) {
+    if (!questButton) return;
 
+    const buttons = Array.from(document.querySelectorAll(".quest-item"));
+    buttons.forEach(button => button.classList.remove("selected"));
+    questButton.classList.add("selected");
+
+    const selectedQuest = quests.find(quest => quest.id === questButton.dataset.questId);
+    if (selectedQuest) {
+        renderQuestDescription(selectedQuest);
+    }
+}
+
+function renderQuestList(quests) {
+    if (!questList) return;
+
+    questList.innerHTML = quests
+        .map(quest => `
+            <button class="quest-item" data-quest-id="${escapeHtml(quest.id)}" type="button">
+                <span class="square" aria-hidden="true"></span>
+                <span class="quest-name">${escapeHtml(quest.name)}</span>
+            </button>
+        `)
+        .join("");
+
+    const buttons = Array.from(document.querySelectorAll(".quest-item"));
     buttons.forEach(button => {
         button.addEventListener("click", () => {
-            buttons.forEach(btn => btn.classList.remove("active"));
-            button.classList.add("active");
-
-            const selectedQuest = quests.find(quest => quest.id === button.dataset.questId);
-            if (selectedQuest) {
-                renderQuestDetails(selectedQuest);
-            }
-
-            centerDataButton(button);
+            selectQuest(button, quests);
         });
     });
+
+    selectQuest(buttons[0], quests);
 }
 
 function getSupabaseCredentials() {
-    const runtimeConfig = window.__SUPABASE__ || {};
-
     return {
         url: "https://uhuhsfmkgktnchazuoey.supabase.co",
         anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVodWhzZm1rZ2t0bmNoYXp1b2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0Nzg4NTMsImV4cCI6MjA4ODA1NDg1M30.l6J6fod4UAYVvJ5-lVRJJDyrPBc82OjstxQKEhSU-3I"
@@ -99,9 +74,10 @@ function getSupabaseCredentials() {
 }
 
 async function loadQuests() {
-    if (!questPanel || !window.supabase?.createClient) return;
+    if (!questList || !questDetails || !window.supabase?.createClient) return;
 
-    questPanel.textContent = "Loading quests...";
+    questList.textContent = "Loading quests...";
+    questDetails.textContent = "Select a quest to view details.";
 
     try {
         const { url, anonKey } = getSupabaseCredentials();
@@ -117,29 +93,21 @@ async function loadQuests() {
         const quests = (data || []).map(normalizeQuest);
 
         if (quests.length === 0) {
-            if (dataTrack) {
-                dataTrack.innerHTML = '<button class="active" disabled>NO QUESTS</button>';
-            }
-            questPanel.textContent = "No quests found.";
+            questList.textContent = "No quests found.";
+            questDetails.textContent = "Add quests to the database to see quest details here.";
             return;
         }
 
-        renderQuestSubnav(quests);
-        renderQuestDetails(quests[0]);
-        wireQuestSubnav(quests);
-        centerDataButton(getDataButtons()[0]);
+        renderQuestList(quests);
     } catch (error) {
         console.error("Unable to load quests", error);
-        if (dataTrack) {
-            dataTrack.innerHTML = '<button class="active" disabled>QUESTS</button>';
-        }
-        questPanel.textContent = "Could not load quests from Supabase.";
+        questList.textContent = "Could not load quests from Supabase.";
+        questDetails.textContent = "Please try again later.";
     }
 }
 
 window.centerDataActiveButton = function centerDataActiveButton() {
-    centerDataButton(document.querySelector(".data-subnav button.active"));
+    // No-op: maintained for compatibility with the existing navigation handler.
 };
 
-window.addEventListener("resize", window.centerDataActiveButton);
 loadQuests();
