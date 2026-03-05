@@ -15,6 +15,10 @@ let dragging = false;
 
 function fitToScreen() {
     const wrapperRect = wrapper.getBoundingClientRect();
+    if (!wrapperRect.width || !wrapperRect.height || !image.naturalWidth || !image.naturalHeight) {
+        return;
+    }
+
     const imgWidth = image.naturalWidth;
     const imgHeight = image.naturalHeight;
 
@@ -62,6 +66,7 @@ if (image.complete && image.naturalWidth) {
     fitToScreen();
 }
 window.addEventListener("resize", fitToScreen);
+window.fitMapToScreen = fitToScreen;
 
 // ZOOM
 wrapper.addEventListener("wheel", (e) => {
