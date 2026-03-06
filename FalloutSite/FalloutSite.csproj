@@ -118,14 +118,18 @@
     <Content Include="images\UpstateMap.jpeg" />
     <Content Include="images\worldmap.png" />
     <Content Include="index.html" />
+    <Content Include="js\login.js" />
     <Content Include="js\map.js" />
     <Content Include="js\data.js" />
     <Content Include="js\inventory.js" />
     <Content Include="js\navigation.js" />
     <Content Include="js\radio.js" />
     <Content Include="js\status.js" />
+    <Content Include="js\supabase.js" />
     <Content Include="js\wave.js" />
+    <Content Include="loginpage.html" />
     <Content Include="style.css" />
+    <Content Include="StyleFolder\login_style.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
