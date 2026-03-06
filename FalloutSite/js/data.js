@@ -1,3 +1,4 @@
+const dataTitleScroll = document.querySelector(".data-title-scroll");
 const questList = document.getElementById("questList");
 const questDetails = document.getElementById("questDetails");
 
@@ -111,3 +112,12 @@ window.centerDataActiveButton = function centerDataActiveButton() {
 };
 
 loadQuests();
+
+
+window.playDataTitleAnimation = function playDataTitleAnimation() {
+    if (!dataTitleScroll) return;
+
+    dataTitleScroll.classList.remove("animate");
+    void dataTitleScroll.offsetWidth;
+    dataTitleScroll.classList.add("animate");
+};
