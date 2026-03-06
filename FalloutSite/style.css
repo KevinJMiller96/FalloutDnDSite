@@ -195,14 +195,12 @@
     width: 100%;
     box-sizing: border-box;
     min-height: 120px;
+    height: 500px;
+    overflow: hidden;
 }
 
 .data-panel {
-    display: none;
-}
-
-.data-panel.active {
-    display: block;
+    display: contents;
 }
 
 .quest-layout {
@@ -211,11 +209,14 @@
     min-height: 320px;
     padding-bottom: calc(40# - 50px);
     border-bottom: 1px solid white;
+    
+    height: 500px; /* or whatever height you want */
 }
 
 .quest-list {
-    width: 100%;
 
+        width: 35%;
+        overflow-y: auto;
 }
 
 .quest-item {
@@ -260,6 +261,10 @@
     width: 40%;
     padding-left: 18px;
     line-height: 1.45;
+    
+    padding: 10px;
+    overflow-y: auto; /* Enables internal scrolling */
+    height: 100%; /* Fill the container height */
 }
 
 .quest-details h3 {
