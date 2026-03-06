@@ -176,7 +176,7 @@
 }
 
 .data-title-scroll.animate {
-    animation: quest-slide-to-center 0.9s ease-out forwards;
+    animation: quest-slide-to-center 0.5s ease-out forwards;
 }
 
 @keyframes quest-slide-to-center {
@@ -190,7 +190,7 @@
 }
 
 .data-box {
-    border: 1px solid #00ff66;
+    border: 0px solid #00ff66;
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
@@ -209,10 +209,13 @@
     display: flex;
     gap: 24px;
     min-height: 320px;
+    padding-bottom: calc(40# - 50px);
+    border-bottom: 1px solid white;
 }
 
 .quest-list {
     width: 100%;
+
 }
 
 .quest-item {
@@ -255,7 +258,6 @@
 
 .quest-details {
     width: 40%;
-    border-left: 1px solid #00ff66;
     padding-left: 18px;
     line-height: 1.45;
 }

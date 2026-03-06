@@ -27,7 +27,6 @@ function renderQuestDescription(quest) {
     if (!questDetails) return;
 
     questDetails.innerHTML = `
-        <h3>${escapeHtml(quest.name)}</h3>
         <p>${escapeHtml(quest.description)}</p>
     `;
 }
