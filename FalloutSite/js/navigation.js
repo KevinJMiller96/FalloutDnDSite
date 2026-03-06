@@ -41,6 +41,10 @@ navButtons.forEach(btn => {
             window.centerDataActiveButton();
         }
 
+        if (btn.dataset.page === "data" && window.playDataTitleAnimation) {
+            window.playDataTitleAnimation();
+        }
+
         // Map may need to re-fit after becoming visible (especially on mobile)
         if (btn.dataset.page === "map" && window.fitMapToScreen) {
             requestAnimationFrame(() => {
