@@ -9,12 +9,5 @@ loginBtn.addEventListener("click", async () => {
         email: email.value,
         password: password.value
     });
-
-    if (error) {
-        console.error(error.message);
-        return;
-    }
-
-    window.location.href = "/index.html";
-
+    window.location.href = "/boot_screen.html";
 });

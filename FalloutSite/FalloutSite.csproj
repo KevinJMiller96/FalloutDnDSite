@@ -113,6 +113,7 @@
     <Content Include="audio\QuestStarter.mp3" />
     <Content Include="audio\Static.mp3" />
     <Content Include="audio\tab-click.mp3" />
+    <Content Include="boot_screen.html" />
     <Content Include="images\fallout_wheel.jpg" />
     <Content Include="images\Fallout_wheel_trans.png" />
     <Content Include="images\UpstateMap.jpeg" />
@@ -136,6 +137,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\boot_screen.js" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
