@@ -24,7 +24,7 @@ function typeBoot() {
     } else {
 
         setTimeout(() => {
-            window.location.href = "index.html"
+            window.location.href = "../pipboy.html"
         }, 1500)
 
     }

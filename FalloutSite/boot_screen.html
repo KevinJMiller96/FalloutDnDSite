@@ -4,51 +4,13 @@
     <meta charset="UTF-8">
 
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
-    <style>
-
-        body {
-            background: black;
-            color: #33ff33;
-            font-family: 'VT323', monospace;
-            font-size: 32px;
-            padding: 40px;
-        }
-
-        #terminal {
-            white-space: pre-line;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 14px;
-            height: 24px;
-            background: #33ff33;
-            margin-left: 4px;
-            animation: blink 1s steps(2,start) infinite;
-        }
-
-        @keyframes blink {
-            0% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: 0
-            }
-
-            100% {
-                opacity: 1
-            }
-        }
-    </style>
+    <link href="/StyleFolder/boot_style.css" rel="stylesheet">
 </head>
 
 <body>
 
+    <button class="shortcut" onclick="location.href='pipboy.html'">Go to next page</button>
     <div id="terminal"></div><span class="cursor"></span>
-
     <script src="/js/boot_screen.js"></script>
-
 </body>
 </html>

@@ -1,0 +1,40 @@
+﻿body {
+    background: black;
+    color: #33ff33;
+    font-family: 'VT323', monospace;
+    font-size: 32px;
+    padding: 40px;
+}
+
+#terminal {
+    white-space: pre-line;
+}
+
+.cursor {
+    display: inline-block;
+    width: 14px;
+    height: 24px;
+    background: #33ff33;
+    margin-left: 4px;
+    animation: blink 1s steps(2,start) infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
+.shortcut 
+{
+    position: fixed;
+    opacity: 0;
+}
