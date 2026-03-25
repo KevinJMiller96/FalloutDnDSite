@@ -28,7 +28,9 @@ navButtons.forEach(btn => {
 
         // If radio page → trigger canvas resize
         if (btn.dataset.page === "radio" && window.resizeWaveCanvas) {
-            window.resizeWaveCanvas();
+            requestAnimationFrame(() => {
+                window.resizeWaveCanvas();
+            });
         }
 
         // Recenter inventory category slider when inventory page is shown
