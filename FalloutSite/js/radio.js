@@ -47,3 +47,4 @@ stations.forEach(station => {
 
 // Used by wave.js
 window.isRadioActive = () => activeWave;
+window.isRadioWindowActive = () => document.getElementById("radio")?.classList.contains("active") ?? false;
