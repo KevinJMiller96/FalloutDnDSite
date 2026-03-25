@@ -174,3 +174,12 @@
     min-height: 24px;
     text-shadow: 0 0 5px #33ff33;
 }
+
+/* PAGE DISPLAY SELECTOR */
+.page {
+    display: none;
+}
+
+    .page.active {
+        display: block;
+    }

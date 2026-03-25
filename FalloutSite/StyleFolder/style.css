@@ -1,12 +1,4 @@
-﻿body {
-    margin: 0;
-    font-family: "Courier New", monospace;
-    color: #00ff66;
-    background: #001a0a;
-    background-image: repeating-linear-gradient( to bottom, rgba(0,255,100,0.05) 0px, rgba(0,255,100,0.05) 1px, transparent 1px, transparent 4px );
-}
-
-/* ================= NAV ================= */
+﻿/* ================= NAV ================= */
 .nav {
     display: flex;
     gap: 15px;

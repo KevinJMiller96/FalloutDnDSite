@@ -1,0 +1,44 @@
+﻿/* ================ RADIO ================ */
+.station {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    width: max-content;
+}
+
+    .station.selected {
+        background: #39ff14;
+        color: black;
+        font-weight: bold;
+    }
+
+    .station .square {
+        width: 14px;
+        height: 14px;
+        background: black;
+        display: none;
+    }
+
+    .station.selected .square {
+        display: block;
+    }
+
+/* ================ WAVE ================ */
+.wave-container {
+    position: absolute;
+    top: 80px;
+    right: 40px;
+    width: 25vw;
+    height: 25vw;
+    border: 2px solid #00ff66;
+    box-shadow: inset 0 0 40px rgba(0,255,100,0.3);
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}

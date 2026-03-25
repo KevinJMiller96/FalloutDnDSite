@@ -1,69 +1,73 @@
-const canvas = document.getElementById("waveCanvas");
-const ctx = canvas.getContext("2d");
+function initWave()
+{
+    const canvas = document.getElementById("waveCanvas");
+    const ctx = canvas.getContext("2d");
 
-let width, height;
-let time = 0;
+    let width, height;
+    let time = 0;
 
-function resizeWave() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    width = canvas.width;
-    height = canvas.height;
-}
-
-window.addEventListener("resize", resizeWave);
-window.resizeWaveCanvas = resizeWave;
-function drawGrid() {
-    ctx.strokeStyle = "rgba(0,255,100,0.2)";
-    for (let i = 0; i < width; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, height);
-        ctx.stroke();
+    function resizeWave() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        width = canvas.width;
+        height = canvas.height;
     }
-    for (let i = 0; i < height; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(0, i);
-        ctx.lineTo(width, i);
-        ctx.stroke();
+
+    window.addEventListener("resize", resizeWave);
+    window.resizeWaveCanvas = resizeWave;
+    function drawGrid() {
+        console.log("Right? ");
+        ctx.strokeStyle = "rgba(0,255,100,0.2)";
+        for (let i = 0; i < width; i += 40) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, height);
+            ctx.stroke();
+        }
+        for (let i = 0; i < height; i += 40) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(width, i);
+            ctx.stroke();
+        }
     }
-}
 
-function drawWave() {
-    ctx.clearRect(0, 0, width, height);
-    drawGrid();
+    function drawWave() {
+        ctx.clearRect(0, 0, width, height);
+        drawGrid();
 
-    ctx.strokeStyle = "#00ff66";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
+        ctx.strokeStyle = "#00ff66";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
 
-    let centerY = height / 2;
-    let active = window.isRadioActive ? window.isRadioActive() : false;
+        let centerY = height / 2;
+        let active = window.isRadioActive ? window.isRadioActive() : false;
 
-    for (let x = 0; x < width; x++) {
-        let y = centerY;
+        for (let x = 0; x < width; x++) {
+            let y = centerY;
 
-        if (active) {
+            if (active) {
 
-            const noise =
-                Math.sin((x * 0.02) + time) * 30 +
-                Math.sin((x * 0.07) + time * 1.7) * 20 +
-                Math.sin((x * 0.15) + time * 2.3) * 10;
+                const noise =
+                    Math.sin((x * 0.02) + time) * 30 +
+                    Math.sin((x * 0.07) + time * 1.7) * 20 +
+                    Math.sin((x * 0.15) + time * 2.3) * 10;
 
-            const chaos = (Math.random() - 0.5) * 25;
+                const chaos = (Math.random() - 0.5) * 25;
 
-            y += noise + chaos;
+                y += noise + chaos;
+            }
+
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
         }
 
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        ctx.stroke();
+
+        if (active) time += 0.15;
+
+        requestAnimationFrame(drawWave);
     }
 
-    ctx.stroke();
-
-    if (active) time += 0.15;
-
-    requestAnimationFrame(drawWave);
+    drawWave();
 }
-
-drawWave();

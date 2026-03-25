@@ -1,161 +1,38 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Pip-Boy Interface</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Pip-Boy</title>
+    <link rel="stylesheet" href="StyleFolder/login_style.css">
+    <link rel="stylesheet" href="/StyleFolder/navigation_style.css">
+    <!-- STYLE LINKING -->
+    <link rel="stylesheet" href="/StyleFolder/radio.css">
 </head>
-<body>
 
-    <!-- NAV -->
-    <div class="nav">
-        <button class="active" data-page="status">STAT</button>
-        <button data-page="inventory">INV</button>
-        <button data-page="data">DATA</button>
-        <button data-page="map">MAP</button>
-        <button data-page="radio">RADIO</button>
+<body class="login">
+    <div class="terminal">
+        <!-- NAV BAR -->
+        <div id="nav-container"></div>
+
+        <!-- PAGE CONTAINER -->
+        <div class="page-container">
+            <div id="status" class="page active"></div>
+            <div id="inventory" class="page"></div>
+            <div id="data" class="page"></div>
+            <div id="map" class="page"></div>
+            <div id="radio" class="page"></div>
+            <div id="settings" class="page"></div>
+        </div>
+
+        <div class="scanline"></div>
     </div>
-
-    <div class="page-container">
-
-        <!-- STATUS PAGE -->
-        <div class="page active" id="status">
-            <h2>STATUS</h2>
-
-            <div class="stat-group">
-                HP<br>
-                <input type="range" min="0" max="100" value="100" class="slider" id="hpSlider">
-                <div id="hpValue">100 / 100</div>
-            </div>
-
-            <div class="stat-group">
-                RADS<br>
-                <input type="range" min="0" max="100" value="0" class="slider" id="radSlider">
-                <div id="radValue">0 RADS</div>
-            </div>
-        </div>
-
-        <!-- INVENTORY -->
-        <div class="page" id="inventory">
-            <div class="inventory-subnav">
-                <div class="inventory-subnav-track">
-                    <button class="active" data-category="weapons">WEAPONS</button>
-                    <button data-category="apparel">APPAREL</button>
-                    <button data-category="aid">AID</button>
-                    <button data-category="junk">JUNK</button>
-                    <button data-category="misc">MISC</button>
-                    <button data-category="ammo">AMMO</button>
-                </div>
-            </div>
-
-            <div class="inventory-box">
-                <div class="inventory-panel active" id="weapons">
-                    Weapons list will go here.
-                </div>
-
-                <div class="inventory-panel" id="apparel">
-                    Apparel list will go here.
-                </div>
-
-                <div class="inventory-panel" id="aid">
-                    Aid items will go here.
-                </div>
-
-                <div class="inventory-panel" id="junk">
-                    Junk items will go here.
-                </div>
-
-                <div class="inventory-panel" id="misc">
-                    Misc items will go here.
-                </div>
-
-                <div class="inventory-panel" id="ammo">
-                    Ammo inventory will go here.
-                </div>
-            </div>
-        </div>
-
-        <!-- DATA -->
-        <div class="page" id="data">
-            <h2 class="data-title"><span class="data-title-scroll">QUESTS</span></h2>
-
-            <div class="data-box quest-layout">
-                <div class="data-panel active" id="quest">
-                    <div class="quest-list" id="questList">
-                        Quest log will go here.
-                    </div>
-                </div>
-
-                <div class="quest-details" id="questDetails">
-                    Select a quest to view details.
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="map">
-            <div class="map-wrapper" id="mapWrapper">
-
-                <div class="map-content" id="mapContent">
-
-                    <img src="images/UpstateMap.jpeg" id="pipboyMap" draggable="false">
-
-                    <!-- NPC Marker -->
-                    <div class="map-marker"
-                         data-name="Vault 42"
-                         style="left: 800px; top: 200px;">
-                        <img src="images/Fallout_wheel_trans.png">
-                    </div>
-                    <div class="map-marker"
-                         data-name="Vault 37"
-                         style="left: 400px; top: 100px;">
-                        <img src="images/Fallout_wheel_trans.png">
-                    </div>
-                    <div class="map-marker"
-                         data-name="Vault 9"
-                         style="left: 740px; top: 560px;">
-                        <img src="images/Fallout_wheel_trans.png">
-                    </div>
-                    <div class="map-marker"
-                         data-name="Vault 85"
-                         style="left: 200px; top: 450px;">
-                        <img src="images/Fallout_wheel_trans.png">
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-        <!-- RADIO -->
-        <div class="page" id="radio">
-            <div class="station" data-audio="/audio/QuestStarter.mp3">
-                <div class="square"></div>
-                Mysterious Broadcast Signal
-            </div>
-
-            <div class="station" data-audio="/audio/Static.mp3">
-                <div class="square"></div>
-                Enclave Radio
-            </div>
-
-            <div class="station" data-audio="/audio/Static.mp3">
-                <div class="square"></div>
-                Mojave Music Radio
-            </div>
-            <!-- WAVE -->
-            <div class="wave-container">
-                <canvas id="waveCanvas"></canvas>
-            </div>
-        </div>
-
-    </div>
+    <!-- SCRIPTS -->
+    <script src="js/loadComponents.js"></script>
     <script src="js/navigation.js"></script>
-    <script src="js/inventory.js"></script>
-    <script src="js/status.js"></script>
-    <script src="js/radio.js"></script>
-    <script src="js/wave.js"></script>
-    <script src="js/map.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/wave.js"></script>
+    <script src="js/radio.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/status.js"></script>
 </body>
 </html>

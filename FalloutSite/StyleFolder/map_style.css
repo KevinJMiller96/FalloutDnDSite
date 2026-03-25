@@ -1,0 +1,15 @@
+﻿/* MAP PAGE CONTAINER */
+.map-content {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 120px); /* adjust if your nav height differs */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+/* MAP IMAGE */
+#pipboyMap {
+    width: 100%;
+    height: 100%;
+}

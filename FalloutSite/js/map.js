@@ -1,104 +1,87 @@
-const wrapper = document.getElementById("mapWrapper");
-const content = document.getElementById("mapContent");
-const image = document.getElementById("pipboyMap");
+function initMap()
+{
+    const map = document.getElementById("pipboyMap");
+    const container = document.getElementById("mapContent");
 
-let scale = 1;
-let minScale = 1;
-const maxScale = 4;
+    let scale = 1;
+    let minScale = 1;
+    let maxScale = 5;
 
-let posX = 0;
-let posY = 0;
+    let isDragging = false;
+    let startX, startY;
+    let translateX = 0;
+    let translateY = 0;
 
-let startX = 0;
-let startY = 0;
-let dragging = false;
-
-function fitToScreen() {
-    const wrapperRect = wrapper.getBoundingClientRect();
-    if (!wrapperRect.width || !wrapperRect.height || !image.naturalWidth || !image.naturalHeight) {
-        return;
+    function updateTransform() {
+        map.style.transform =
+            `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     }
 
-    const imgWidth = image.naturalWidth;
-    const imgHeight = image.naturalHeight;
+    /* ZOOM */
+    container.addEventListener("wheel", (e) => {
 
-    const scaleX = wrapperRect.width / imgWidth;
-    const scaleY = wrapperRect.height / imgHeight;
+        e.preventDefault();
 
-    scale = Math.min(scaleX, scaleY);
-    minScale = scale;
+        const zoomSpeed = 0.1;
 
-    posX = (wrapperRect.width - imgWidth * scale) / 2;
-    posY = (wrapperRect.height - imgHeight * scale) / 2;
+        if (e.deltaY < 0) {
+            scale += zoomSpeed;
+        } else {
+            scale -= zoomSpeed;
+        }
 
-    updateTransform();
-}
+        scale = Math.max(minScale, Math.min(maxScale, scale));
 
-function clampPosition() {
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const contentWidth = image.naturalWidth * scale;
-    const contentHeight = image.naturalHeight * scale;
+        clampPosition();
+        updateTransform();
 
-    const minX = wrapperRect.width - contentWidth;
-    const minY = wrapperRect.height - contentHeight;
+    }, { passive: false });
 
-    if (contentWidth <= wrapperRect.width) {
-        posX = (wrapperRect.width - contentWidth) / 2;
-    } else {
-        posX = Math.min(0, Math.max(minX, posX));
+    /* DRAG START */
+    map.addEventListener("mousedown", (e) => {
+
+        isDragging = true;
+        map.style.cursor = "grabbing";
+
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+
+    });
+
+    /* DRAG END */
+    window.addEventListener("mouseup", () => {
+
+        isDragging = false;
+        map.style.cursor = "grab";
+
+    });
+
+    /* DRAG MOVE */
+    window.addEventListener("mousemove", (e) => {
+
+        if (!isDragging) return;
+
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+
+        clampPosition();
+        updateTransform();
+
+    });
+
+    /* KEEP IMAGE INSIDE CONTAINER */
+    function clampPosition() {
+
+        const rect = container.getBoundingClientRect();
+
+        const imgWidth = rect.width * scale;
+        const imgHeight = rect.height * scale;
+
+        const maxX = (imgWidth - rect.width) / 2;
+        const maxY = (imgHeight - rect.height) / 2;
+
+        translateX = Math.min(maxX, Math.max(-maxX, translateX));
+        translateY = Math.min(maxY, Math.max(-maxY, translateY));
     }
 
-    if (contentHeight <= wrapperRect.height) {
-        posY = (wrapperRect.height - contentHeight) / 2;
-    } else {
-        posY = Math.min(0, Math.max(minY, posY));
-    }
 }
-
-function updateTransform() {
-    clampPosition();
-    content.style.transform =
-        `translate(${posX}px, ${posY}px) scale(${scale})`;
-}
-
-image.onload = fitToScreen;
-if (image.complete && image.naturalWidth) {
-    fitToScreen();
-}
-window.addEventListener("resize", fitToScreen);
-window.fitMapToScreen = fitToScreen;
-
-// ZOOM
-wrapper.addEventListener("wheel", (e) => {
-    e.preventDefault();
-
-    const zoomAmount = 0.15;
-    const direction = e.deltaY > 0 ? -1 : 1;
-    const newScale = scale + direction * zoomAmount;
-
-    if (newScale < minScale || newScale > maxScale) return;
-
-    scale = newScale;
-    updateTransform();
-});
-
-// DRAG
-wrapper.addEventListener("mousedown", (e) => {
-    if (scale <= minScale) return; // no dragging unless zoomed
-    dragging = true;
-    startX = e.clientX - posX;
-    startY = e.clientY - posY;
-});
-
-window.addEventListener("mousemove", (e) => {
-    if (!dragging) return;
-
-    posX = e.clientX - startX;
-    posY = e.clientY - startY;
-
-    updateTransform();
-});
-
-window.addEventListener("mouseup", () => {
-    dragging = false;
-});

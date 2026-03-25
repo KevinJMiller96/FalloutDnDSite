@@ -1,12 +1,11 @@
-const hpSlider = document.getElementById("hpSlider");
-const radSlider = document.getElementById("radSlider");
-const hpValue = document.getElementById("hpValue");
-const radValue = document.getElementById("radValue");
+function initStatus()
+{
+    function selectMenu(button, component) {
+        document.querySelectorAll(".menu-btn")
+            .forEach(btn => btn.classList.remove("active"))
 
-hpSlider.oninput = () => {
-    hpValue.textContent = hpSlider.value + " / 100";
-};
+        button.classList.add("active")
 
-radSlider.oninput = () => {
-    radValue.textContent = radSlider.value + " RADS";
-};
+        loadComponent(component)
+    }
+}

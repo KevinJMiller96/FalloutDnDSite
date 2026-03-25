@@ -114,10 +114,20 @@
     <Content Include="audio\Static.mp3" />
     <Content Include="audio\tab-click.mp3" />
     <Content Include="boot_screen.html" />
+    <Content Include="components\data.html" />
+    <Content Include="components\inventory.html" />
+    <Content Include="components\map.html" />
+    <Content Include="components\navbar.html" />
+    <Content Include="components\radio.html" />
+    <Content Include="components\settings.html" />
+    <Content Include="components\status.html" />
+    <Content Include="images\fallout_synth.png" />
     <Content Include="images\fallout_wheel.jpg" />
     <Content Include="images\Fallout_wheel_trans.png" />
     <Content Include="images\UpstateMap.jpeg" />
     <Content Include="images\worldmap.png" />
+    <Content Include="js\loadComponents.js" />
+    <Content Include="js\settings.js" />
     <Content Include="pipboy.html" />
     <Content Include="js\login.js" />
     <Content Include="js\map.js" />
@@ -129,7 +139,11 @@
     <Content Include="js\supabase.js" />
     <Content Include="js\wave.js" />
     <Content Include="index.html" />
-    <Content Include="style.css" />
+    <Content Include="StyleFolder\map_style.css" />
+    <Content Include="StyleFolder\navigation_style.css" />
+    <Content Include="StyleFolder\radio.css" />
+    <Content Include="StyleFolder\status.css" />
+    <Content Include="StyleFolder\style.css" />
     <Content Include="StyleFolder\boot_style.css" />
     <Content Include="StyleFolder\login_style.css" />
     <Content Include="Web.config" />
@@ -147,6 +161,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

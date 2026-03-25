@@ -1,7 +1,8 @@
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabaseClient;
 
 const loginBtn = document.getElementById("loginBtn");
+const errorDiv = document.getElementById("error");
 
 loginBtn.addEventListener("click", async () => {
 
@@ -9,5 +10,10 @@ loginBtn.addEventListener("click", async () => {
         email: email.value,
         password: password.value
     });
-    window.location.href = "/boot_screen.html";
+
+    if (error) {
+        errorDiv.innerHTML = error.message;
+    } 
+    else
+        window.location.href = "/boot_screen.html";
 });
