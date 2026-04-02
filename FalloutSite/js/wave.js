@@ -16,7 +16,6 @@ function initWave()
     window.addEventListener("resize", resizeWave);
     window.resizeWaveCanvas = resizeWave;
     function drawGrid() {
-        console.log("Right? ");
         ctx.strokeStyle = "rgba(0,255,100,0.2)";
         for (let i = 0; i < width; i += 40) {
             ctx.beginPath();
@@ -68,6 +67,12 @@ function initWave()
 
         requestAnimationFrame(drawWave);
     }
+    function onLoad()
+    {
+        console.log("Test");
+        resizeWave();
+    }
 
+    onLoad();
     drawWave();
 }

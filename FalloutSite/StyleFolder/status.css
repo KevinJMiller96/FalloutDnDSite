@@ -63,11 +63,10 @@
 /* Character Image */
 
 .character {
-    height: 85%;
-    width: auto;
+    width: 100vw;
+    height: 100vh;
     object-fit: contain;
-    filter: brightness(0) saturate(100%) invert(62%) sepia(98%) saturate(349%) hue-rotate(79deg);
-    transform: translateY(10%);
+    transform: translateY(-18%);
 }
 
 /* OVERLAY */
@@ -83,7 +82,7 @@
 
 #component-panel {
     width: 300px;
-    border-left: 2px solid #00ff88;
+    
     padding: 20px;
 }
 
