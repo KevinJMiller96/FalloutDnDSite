@@ -1,6 +1,7 @@
 ﻿function initStatus()
 {
     const siteSoundSetting = document.getElementById("SoundSetting");
+    const logoutBtn = document.getElementById("logoutBtn");
 
     // Function to update displayed value
     function updateSliderValue() {                                        
@@ -14,6 +15,12 @@
     // Optional: Update the value initially to reflect the default value
     updateSliderValue();
     GetSiteSoundValue();
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+            await window.supabaseClient.auth.signOut();
+        });
+    }
 }
 
 function GetSiteSoundValue()

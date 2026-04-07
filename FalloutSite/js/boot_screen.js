@@ -31,4 +31,13 @@ function typeBoot() {
 
 }
 
-typeBoot()
+async function startBootSequence() {
+    if (window.authGuardReady) {
+        const hasSession = await window.authGuardReady;
+        if (!hasSession) return;
+    }
+
+    typeBoot();
+}
+
+startBootSequence()

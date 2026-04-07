@@ -22,6 +22,11 @@ async function initComponents() {
     initWave();
     GetSiteSoundValue();
 }
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    if (window.authGuardReady) {
+        const hasSession = await window.authGuardReady;
+        if (!hasSession) return;
+    }
+
     initComponents();
 });
